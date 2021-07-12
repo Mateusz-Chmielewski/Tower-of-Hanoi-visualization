@@ -1,8 +1,20 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include <sstream>
 
 using namespace std;
 using namespace sf;
+
+//Algorithm that return in string step by step the solution to the Tower of Hanoi problem
+string mchHanoiStringAlgorithm(int n, char a, char b, char c) {
+    if (n != 0) {
+        stringstream result;
+        result << mchHanoiStringAlgorithm(n - 1, a, c, b);
+        result << a << c << " ";
+        result << mchHanoiStringAlgorithm(n - 1, b, a, c);
+        return result.str();
+    } else return "";
+}
 
 int main()
 {
@@ -34,6 +46,13 @@ int main()
     paleC.setFillColor(Color(0, 0, 255));
     paleC.setOrigin(0, 0);
     paleC.setPosition(palePositionX * 3, palePositionY);
+
+
+    //Initialize of the Tower of Hanoi algorithm
+    int numberOfDisks = 6;
+    string step = mchHanoiStringAlgorithm(numberOfDisks, 'A', 'B', 'C');
+    cout << step;
+
 
     //Creating a event and displaying the window
     Event event;
