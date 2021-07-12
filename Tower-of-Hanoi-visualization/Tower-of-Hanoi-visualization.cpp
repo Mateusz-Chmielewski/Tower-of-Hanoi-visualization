@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <sstream>
 #include <vector>
+#include <list>
 
 using namespace std;
 using namespace sf;
@@ -11,7 +12,7 @@ string mchHanoiStringAlgorithm(int n, char a, char b, char c) {
     if (n != 0) {
         stringstream result;
         result << mchHanoiStringAlgorithm(n - 1, a, c, b);
-        result << a << c << " ";
+        result << a << c;
         result << mchHanoiStringAlgorithm(n - 1, b, a, c);
         return result.str();
     } else return "";
@@ -51,10 +52,9 @@ int main()
 
     //Initialize of the Tower of Hanoi algorithm
     int numberOfDisks = 6;
-    string step = mchHanoiStringAlgorithm(numberOfDisks, 'A', 'B', 'C');
-    cout << step;
+    string steps = mchHanoiStringAlgorithm(numberOfDisks, 'A', 'B', 'C');
 
-    vector <RectangleShape> listOfDisksOnPale[3];
+    list <RectangleShape> listOfDisksOnPale[3];
 
     //Creating disks
     for (int i = 1; i <= numberOfDisks; i++) {
@@ -84,12 +84,35 @@ int main()
         //Displaying disks
         for (int i = 0; i < 3; i++) {
             int position = displayedWindow.getSize().y - 20;
-            for (auto x = listOfDisksOnPale[i].rbegin(); x < listOfDisksOnPale[i].rend(); ++x) {
+            for (auto x = listOfDisksOnPale[i].rbegin(); x != listOfDisksOnPale[i].rend(); ++x) {
                 int diskPositionX = palePositionX + palePositionX * i;
                 int diskPositionY = (position -= x->getSize().y + 10);
                 x->setPosition(diskPositionX, diskPositionY);
                 displayedWindow.draw(*x);
             }
+        }
+
+        //Moving disks
+        if (steps != "") {
+            string step = steps.substr(0, 2);
+            steps = steps.substr(2);
+            int popIndex, pushIndex;
+            
+            switch (step[0]) {
+            case 'A': popIndex = 0; break;
+            case 'B': popIndex = 1; break;
+            case 'C': popIndex = 2; break;
+            }
+
+            switch (step[1]) {
+            case 'A': pushIndex = 0; break;
+            case 'B': pushIndex = 1; break;
+            case 'C': pushIndex = 2; break;
+            }
+
+            //Transfer disk
+            listOfDisksOnPale[pushIndex].push_front(listOfDisksOnPale[popIndex].front());
+            listOfDisksOnPale[popIndex].pop_front();
         }
 
         displayedWindow.display();
