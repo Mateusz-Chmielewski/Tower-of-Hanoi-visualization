@@ -30,8 +30,8 @@ int main()
 
     //Creating shapes of pales
     Vector2f paleSize(40, 600);
-    auto palePositionX = displayedWindow.getSize().x / 4;
-    auto palePositionY = displayedWindow.getSize().y - paleSize.y;
+    int palePositionX = displayedWindow.getSize().x / 4;
+    int palePositionY = displayedWindow.getSize().y - paleSize.y;
 
     RectangleShape paleA(paleSize);
     paleA.setFillColor(Color(255, 0, 0));
@@ -57,12 +57,12 @@ int main()
     vector <RectangleShape> listOfDisksOnPale[3];
 
     //Creating disks
-    for (int i = 1; i < numberOfDisks; i++) {
-        unsigned DiskSizeX = 40 + 20 * i;
-        unsigned DiskSizeY = 20;
-        listOfDisksOnPale[0].push_back(RectangleShape(Vector2f(DiskSizeX, DiskSizeY)));
+    for (int i = 1; i <= numberOfDisks; i++) {
+        int diskSizeX = 40 + 20 * i;
+        int diskSizeY = 20;
+        listOfDisksOnPale[0].push_back(RectangleShape(Vector2f(diskSizeX, diskSizeY)));
         listOfDisksOnPale[0].back().setFillColor(Color(0, 255, 255));
-        listOfDisksOnPale[0].back().setOrigin((DiskSizeY + DiskSizeX) / 2 - paleSize.x / 2, 0);
+        listOfDisksOnPale[0].back().setOrigin(diskSizeX / 2 - paleSize.x / 2, 0);
     }
 
 
@@ -76,15 +76,24 @@ int main()
 
         displayedWindow.clear(Color(255, 255, 255));
 
-        //Dislaing pales
+        //Dislaying pales
         displayedWindow.draw(paleA);
         displayedWindow.draw(paleB);
         displayedWindow.draw(paleC);
 
-        displayedWindow.draw(listOfDisksOnPale[0].back());
-
+        //Displaying disks
+        for (int i = 0; i < 3; i++) {
+            int position = displayedWindow.getSize().y - 20;
+            for (auto x = listOfDisksOnPale[i].rbegin(); x < listOfDisksOnPale[i].rend(); ++x) {
+                int diskPositionX = palePositionX + palePositionX * i;
+                int diskPositionY = (position -= x->getSize().y + 10);
+                x->setPosition(diskPositionX, diskPositionY);
+                displayedWindow.draw(*x);
+            }
+        }
 
         displayedWindow.display();
+        sleep(milliseconds(550));
     }
 
 
