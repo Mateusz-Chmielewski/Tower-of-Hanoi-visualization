@@ -1,6 +1,7 @@
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <sstream>
+#include <vector>
 
 using namespace std;
 using namespace sf;
@@ -53,6 +54,17 @@ int main()
     string step = mchHanoiStringAlgorithm(numberOfDisks, 'A', 'B', 'C');
     cout << step;
 
+    vector <RectangleShape> listOfDisksOnPale[3];
+
+    //Creating disks
+    for (int i = 1; i < numberOfDisks; i++) {
+        unsigned DiskSizeX = 40 + 20 * i;
+        unsigned DiskSizeY = 20;
+        listOfDisksOnPale[0].push_back(RectangleShape(Vector2f(DiskSizeX, DiskSizeY)));
+        listOfDisksOnPale[0].back().setFillColor(Color(0, 255, 255));
+        listOfDisksOnPale[0].back().setOrigin((DiskSizeY + DiskSizeX) / 2 - paleSize.x / 2, 0);
+    }
+
 
     //Creating a event and displaying the window
     Event event;
@@ -68,6 +80,8 @@ int main()
         displayedWindow.draw(paleA);
         displayedWindow.draw(paleB);
         displayedWindow.draw(paleC);
+
+        displayedWindow.draw(listOfDisksOnPale[0].back());
 
 
         displayedWindow.display();
