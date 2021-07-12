@@ -51,7 +51,15 @@ int main()
 
 
     //Initialize of the Tower of Hanoi algorithm
-    int numberOfDisks = 6;
+    unsigned numberOfDisks;
+    cout << "Enter number of disks (max 20): ";
+    cin >> numberOfDisks;
+
+    if (numberOfDisks > 20) {
+        cout << "Wrong value!\n";
+        return 0;
+    }
+
     string steps = mchHanoiStringAlgorithm(numberOfDisks, 'A', 'B', 'C');
 
     list <RectangleShape> listOfDisksOnPale[3];
@@ -116,7 +124,7 @@ int main()
         }
 
         displayedWindow.display();
-        sleep(milliseconds(550));
+        sleep(milliseconds(400));
     }
 
 
